@@ -8,37 +8,37 @@ using namespace std;
 
 int count(const char word[], const char sentence[]){
 
-  char* myword;
   char mysentence[255];
-  int i = 0;
-  int j = 0;
   char soundex1[5];
   char soundex2[5];
+  int counter = 0;
+  int len = 0;
 
   strcpy(mysentence, sentence);
   encode(word, soundex1);
+  len = strlen(mysentence);
 
-  // while there is still a word in the sentence
-  // put the word in a new variable and delete it from the sentence
-
-  myword = strtok(mysentence, " .,-");
-
-  while (myword != NULL){
-
-    encode(myword, soundex2);
-
-    if (compare(soundex1, soundex2)){
-      j++;
-    }
-
-    myword = strtok(NULL, " .,-");
-    i++;
+  // replace all non alphabet with \0
+  for (int i = 0; i < len; i++){
+    if (!isalpha(mysentence[i]))
+      mysentence[i] = '\0';
   }
 
-  return j;
+  // encode and compare every word of the sentence 
+  // that starts with the first character of word
+  for (int i = 0; i < len; i++){
+    if ( mysentence[i] == word[0] ) {
+      encode(mysentence+i, soundex2);
+      if (compare(soundex1, soundex2)){
+        counter++;
+      }
+    }
+  }
+
+  return counter;
 }
 
-bool compare(char one[], char two[]){
+bool compare(const char one[], const char two[]){
 
   if (one[0] != two[0]) return false;
   if ((one[0] == '\0') && (two[0] == '\0')) return true;
@@ -57,7 +57,8 @@ void encode(const char name[], char* soundex){
   int j = 0; // counter for soundex
   int len = strlen(name); // length of surname
 
-  *soundex = name[0]; // start of soundex code is always the first letter
+  // start of soundex code is always the first letter
+  soundex[0] = toupper(name[0]);
 
   // for every letter except the first one
   for (i = 1; i < len; i++){
@@ -68,15 +69,17 @@ void encode(const char name[], char* soundex){
       return;
     }
 
+    // get the soudex and assign to tmp_code
     tmp_code = get_soundex_code(name[i]);
 
+    // if the soudex exists, and its not the same as previous soudex
     if ((tmp_code != -1) && (tmp_code != prev_code)){
       soundex[++j] = tmp_code+'0';
       prev_code = tmp_code;
     }
   }
 
-  // fill the rest with zeros
+  // fill the rest with zeros if not enough digits to make a 4 char soudex
   if (j <= 3){
     for (int k = j+1; k < 4; k++){
       soundex[k] = '0';
@@ -88,19 +91,12 @@ void encode(const char name[], char* soundex){
 
 int get_soundex_code(const char c){
 
-  char list1[] = {'b', 'f', 'p', 'v'};
-  char list2[] = {'c', 'g', 'j', 'k', 'q', 's', 'x', 'z'};
-  char list3[] = {'d', 't'};
-  char list4[] = {'l'};
-  char list5[] = {'m', 'n'};
-  char list6[] = {'r'};
-
-  if (is_from_group(list1, c)) return 1;
-  if (is_from_group(list2, c)) return 2;
-  if (is_from_group(list3, c)) return 3;
-  if (is_from_group(list4, c)) return 4;
-  if (is_from_group(list5, c)) return 5;
-  if (is_from_group(list6, c)) return 6;
+  if (is_from_group(LIST1, c)) return 1;
+  if (is_from_group(LIST2, c)) return 2;
+  if (is_from_group(LIST3, c)) return 3;
+  if (is_from_group(LIST4, c)) return 4;
+  if (is_from_group(LIST5, c)) return 5;
+  if (is_from_group(LIST6, c)) return 6;
 
   return -1;
 }
@@ -116,5 +112,4 @@ bool is_from_group(const char list[], const char c){
   }
 
   return false;
-
 }
