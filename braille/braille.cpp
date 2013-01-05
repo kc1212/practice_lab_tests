@@ -45,11 +45,11 @@ int encode_character(const char ch, char braille[]){
         strcpy(braille, PARAN);
         break;
       default:
-        return -1;
+        strcpy(braille, NOTFOUND);
     }
 
   } else {
-    return -1;
+    strcpy(braille, NOTFOUND);
   }
 
   return strlen(braille);

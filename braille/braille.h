@@ -23,4 +23,5 @@ const char HYPHEN[] = "..0..0";
 const char EXCLAMATION[] = ".00.0.";
 const char QUESTION[] = ".00..0";
 const char PARAN[] = ".00.00";
+const char NOTFOUND[] = "......";
 
