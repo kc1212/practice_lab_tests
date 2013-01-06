@@ -28,4 +28,10 @@ difference(L1,L2,L) :- findall(X,(member(X,L1), \+member(X,L2)),L).
 sift(L,N,R) :- findall(X, (member(X,L), X=<N), R).
 
 % 6, um.. too long
+process(L1,L2,C,I) :-
+  findall((X1,Y1,Z1), (member((X1,Y1),L1), member((X1,Y1,Z1),L2)), C),
+  findall((X,Y,Z), (member((X,Y,Z),L2), \+member((X,Y),L1)), I).
+  /*setof((X4,Y4,Z4), (member((X3,Y3),L1), member((X4,Y4,Z4),L2),
+  (X3 \= X4; Y3 \= Y4)), I).*/
+    %test(L1,L2,C,I) :- findall((X,Y,Z), (member((X,Y,Z),L2), \+member((X,Y),L1)), I).
 
