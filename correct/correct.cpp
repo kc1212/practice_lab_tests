@@ -11,9 +11,7 @@ int decode(const char rec[], char decoded[]){
   err_count = 0;
   len = strlen(rec);
 
-  decode_four_bits(rec, decoded);
-
-  for (j = 0, i = 0; i < len; i+=7, j+=4){
+  for (j = 0, i = 0; i < len-6; i+=7, j+=4){
     if (decode_four_bits(rec+i, decoded+j)){
       err_count++;
     }
@@ -40,22 +38,22 @@ bool decode_four_bits(const char rec[], char decoded[]){
   decoded[3] = rec[6];
   decoded[4]  = '\0';
 
+
   if (strcmp(p, "000")){
-    error_pos = binary_to_int(p);
-    error_bit = decoded[error_pos];
-    cout << "p: " << p << " | pos: " << error_pos << endl;
+    error_pos = binary_to_int(p) - 1;
+    error_bit = rec[error_pos];
 
     switch (error_pos){
-      case 3: 
+      case 2: 
         decoded[0] = (error_bit == '0') ? '1' : '0';
         break;
+      case 4:
       case 5:
       case 6:
-      case 7:
-        decoded[error_pos - 4] = (error_bit == '0') ? '1' : '0';
+        decoded[error_pos - 3] = (error_bit == '0') ? '1' : '0';
         break;
       default:
-        cerr << "decoding error!" << endl;
+        cerr << "decoding error at error_pos: " << error_pos << endl;
     }
     return true;
   }
@@ -120,6 +118,7 @@ void binary_to_text(char binary[], char text[]){
 
   // check for sentinel character
   if (!binary[0]) {
+    text[0] = '\0';
     return;
   }
 

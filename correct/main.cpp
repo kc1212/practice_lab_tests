@@ -66,7 +66,7 @@ endl << endl;
   binary_to_text(decoded, text);
   cout << "which as text is '" << text << "'" << endl << endl;  
 
-  // but can you decode this? you can only do it if you do what it says 
+  /* but can you decode this? you can only do it if you do what it says */
   strcpy(correct,"00011000001001010001000001001100110011010011101101111110000101111001101100110010010101010100000000100110010000110101010011001101010100110011");
   errors = decode(correct, decoded);
   cout << correct << " decoded is:" << endl << decoded << " (" << errors << " errors corrected)" << endl;  
@@ -74,6 +74,5 @@ endl << endl;
   cout << "which as text is '" << text << "'" << endl << endl;  
 
   cout << "======================= The End ========================" << endl << endl;
-
 
 }
