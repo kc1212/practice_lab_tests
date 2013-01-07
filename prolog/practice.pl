@@ -32,6 +32,11 @@ difference(L1,L2,L) :- findall(X,(member(X,L1), \+member(X,L2)),L).
 % elements greater than N removed.
 sift(L,N,R) :- findall(X, (member(X,L), X=<N), R).
 
+% using recursion
+sift2([],_,[]).
+sift2([H|T],N,X) :- (H=<N -> NewElement = [H]; NewElement = []), 
+  sift2(T,N,Xnew), append(Xnew,NewElement,X). 
+
 % 6, um.. too long
 process(L1,L2,C,I) :-
   findall((X1,Y1,Z1), (member((X1,Y1),L1), member((X1,Y1,Z1),L2)), C),
