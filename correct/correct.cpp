@@ -114,7 +114,7 @@ void text_to_binary(const char text[], char* binary){
   text_to_binary(text+1, binary+8);
 }
 
-void binary_to_text(char binary[], char text[]){
+void binary_to_text(const char binary[], char text[]){
 
   // check for sentinel character
   if (!binary[0]) {
@@ -139,7 +139,7 @@ void binary_to_text(char binary[], char text[]){
 void ascii_to_binary(char ch, char *binary);
 
 /* converts a binary string representation into a character */
-char binary_to_ascii(char *binary);
+char binary_to_ascii(const char *binary);
 
 void ascii_to_binary(char ch, char *binary) {
   for (int n = 128; n; n >>= 1) 
@@ -147,7 +147,7 @@ void ascii_to_binary(char ch, char *binary) {
   *binary = '\0';
 }
 
-char binary_to_ascii(char *binary) {
+char binary_to_ascii(const char *binary) {
   int ch = 0;
   for (int n=0, slide=128; n<8; n++, slide >>= 1) {
     if (binary[n] == '1')

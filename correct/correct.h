@@ -1,11 +1,12 @@
 #ifndef CORRECT_H
 #define CORRECT_H
+#include <cstring>
 
 void ascii_to_binary(char letter, char *output);
-char binary_to_ascii(char *binary);
+char binary_to_ascii(const char *binary);
 
 void text_to_binary(const char text[], char* binary);
-void binary_to_text(char binary[], char text[]);
+void binary_to_text(const char binary[], char text[]);
 void add_error_correction(const char data[], char correct[]);
 void encode_four_bit(const char data[], char correct[]);
 char parity(const char d1, const char d2, const char d3);

@@ -1,14 +1,19 @@
-% 1, subList(L1, L2) to mean every element in list L1 is also in list L2
-subList([],_).
-subList([H|T],L) :- member(H,L), !, subList(T,L).
+:- use_module(library(lists)).
 
-% 2, intersect (L1, L2, I) to mean I is the intersection of lists L1 and L2.
+% 1, subList(L1, L2) to mean every element in list L1 is also in list L2
+subList(L1,L2) :- member(H,L1), member(H,L2).
+
+% 2a, intersect (L1, L2, I) to mean I is the intersection of lists L1 and L2.
 % intersect([],_,[]).
 intersect(L1,L2,I) :-
   findall(X,(member(X,L2), member(X,L1)),Y), 
   setof(Z,member(Z,Y),I).
 
-% order(IN,OUT) :- 
+% 2b, 
+intersect2(L1,L2,I) :-
+  intersect(L1,L2,I1),
+  setof(Count-X, (member(X,I1), countX(X,L2,Count)), Tmp),
+  findall(Xx, member(_-Xx,Tmp), I).
 
 % counts how many times X occurs in list L, output is O
 countX(X,L,O) :- findall(X, member(X,L), Y), length(Y,O).
@@ -16,7 +21,7 @@ countX(X,L,O) :- findall(X, member(X,L), Y), length(Y,O).
 
 % 3, disjoint(L1, L2) to mean L1 and L2 share no elements, and at least one 
 % of them is not empty
-disjoint([],_).
+disjoint([X],L) :- \+member(X,L).
 disjoint([H|T], L) :- \+member(H,L), disjoint(T,L).
 
 % 4, difference(L1, L2, L) to mean L consists of all the elements in L1 that 
