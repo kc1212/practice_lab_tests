@@ -52,7 +52,6 @@ compress([H1|T1],X) :-
   append(NewElement,[H2|T2],X).
 
 
-
 % 09 pack consecutive duplicates into sublists
 pack([],[]).
 
